@@ -34,27 +34,21 @@ export metrics_file_prefix="apim"
 export run_performance_tests_script_name="run-performance-tests.sh"
 
 function usageCommand() {
-    echo "-a <wso2am_distribution> -c <mysql_connector_jar> -A <wso2am_ec2_instance_type> -D <wso2am_rds_db_instance_class>"
+    echo "-A <wso2am_ec2_instance_type> -D <wso2am_rds_db_instance_class>"
 }
 export -f usageCommand
 
 function usageHelp() {
-    echo "-a: WSO2 API Manager Distribution."
-    echo "-c: MySQL Connector JAR file."
+    #echo "-a: WSO2 API Manager Distribution."
+    #echo "-c: MySQL Connector JAR file."
     echo "-A: Amazon EC2 Instance Type for WSO2 API Manager."
     echo "-D: Amazon EC2 DB Instance Class for WSO2 API Manager RDS Instance."
 
 }
 export -f usageHelp
 
-while getopts ":u:f:d:k:n:j:o:g:s:b:r:J:S:N:t:p:w:ha:c:A:D:" opt; do
+while getopts ":u:y:m:d:n:s:b:r:J:N:t:p:w:A:D:" opt; do
     case "${opt}" in
-    a)
-        wso2am_distribution=${OPTARG}
-        ;;
-    c)
-        mysql_connector_jar=${OPTARG}
-        ;;
     A)
         wso2am_ec2_instance_type=${OPTARG}
         ;;
@@ -70,29 +64,29 @@ done
 shift "$((OPTIND - 1))"
 
 function validate() {
-    if [[ ! -f $wso2am_distribution ]]; then
-        echo "Please provide WSO2 API Manager distribution."
-        exit 1
-    fi
+    # if [[ ! -f $wso2am_distribution ]]; then
+    #     echo "Please provide WSO2 API Manager distribution."
+    #     exit 1
+    # fi
 
-    export wso2am_distribution_filename=$(basename $wso2am_distribution)
+    export wso2am_distribution_filename=wso2am-2.6.0.zip
 
-    if [[ ${wso2am_distribution_filename: -4} != ".zip" ]]; then
-        echo "WSO2 API Manager distribution must have .zip extension"
-        exit 1
-    fi
+    # if [[ ${wso2am_distribution_filename: -4} != ".zip" ]]; then
+    #     echo "WSO2 API Manager distribution must have .zip extension"
+    #     exit 1
+    # fi
 
-    if [[ ! -f $mysql_connector_jar ]]; then
-        echo "Please provide MySQL Connector JAR file."
-        exit 1
-    fi
+    # if [[ ! -f $mysql_connector_jar ]]; then
+    #     echo "Please provide MySQL Connector JAR file."
+    #     exit 1
+    # fi
 
-    export mysql_connector_jar_filename=$(basename $mysql_connector_jar)
+    export mysql_connector_jar_filename=mysql-connector-java-8.0.16.jar
 
-    if [[ ${mysql_connector_jar_filename: -4} != ".jar" ]]; then
-        echo "MySQL Connector JAR must have .jar extension"
-        exit 1
-    fi
+    # if [[ ${mysql_connector_jar_filename: -4} != ".jar" ]]; then
+    #     echo "MySQL Connector JAR must have .jar extension"
+    #     exit 1
+    # fi
 
     if [[ -z $wso2am_ec2_instance_type ]]; then
         echo "Please provide the Amazon EC2 Instance Type for WSO2 API Manager."
