@@ -47,21 +47,38 @@ function usageHelp() {
 }
 export -f usageHelp
 
-while getopts ":u:y:m:d:n:s:b:r:J:N:t:p:w:A:D:" opt; do
-    case "${opt}" in
-    A)
-        wso2am_ec2_instance_type=${OPTARG}
-        ;;
-    D)
-        wso2am_rds_db_instance_class=${OPTARG}
-        ;;
-    *)
-        opts+=("-${opt}")
-        [[ -n "$OPTARG" ]] && opts+=("$OPTARG")
-        ;;
-    esac
-done
-shift "$((OPTIND - 1))"
+# export test_plan=$1
+
+declare -A arr_prop
+
+file="./file.properties"
+if [ -f "$file" ]
+then
+    while IFS='=' read -r key value; do
+        arr_prop["$key"]="$value"
+    done < $file
+    wso2am_ec2_instance_type=${arr_prop["wso2am_ec2"]}
+    wso2am_rds_db_instance_class=${arr_prop["rds_ec2"]}
+else
+  echo "$file not found."
+  exit 1
+fi
+
+# while getopts ":u:y:m:d:n:s:b:r:J:N:t:p:w:A:D:" opt; do
+#     case "${opt}" in
+#     A)
+#         wso2am_ec2_instance_type=${OPTARG}
+#         ;;
+#     D)
+#         wso2am_rds_db_instance_class=${OPTARG}
+#         ;;
+#     *)
+#         opts+=("-${opt}")
+#         [[ -n "$OPTARG" ]] && opts+=("$OPTARG")
+#         ;;
+#     esac
+# done
+# shift "$((OPTIND - 1))"
 
 function validate() {
     # if [[ ! -f $wso2am_distribution ]]; then
