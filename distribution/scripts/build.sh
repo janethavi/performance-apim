@@ -18,6 +18,13 @@
 # ----------------------------------------------------------------------------
 # Run performance tests on AWS Cloudformation Stacks
 # ----------------------------------------------------------------------------
-cd ..
-cd ..
+perf_apim_dir=$(dirname "$0")
+echo $perf_apim_dir
+cd $perf_apim_dir/..
+git clone https://github.com/janethavi/performance-common.git
+perf_dir=$(realpath "performance-common")
+
+cd $perf_dir
+mvn clean install
+cd $perf_apim_dir
 mvn clean install
