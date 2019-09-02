@@ -27,6 +27,6 @@ perf_dir=$(realpath "performance-common")
 cd $perf_dir
 mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
-mvnw clean install
+mvn clean install
 cd $perf_apim_dir
 mvn clean install
