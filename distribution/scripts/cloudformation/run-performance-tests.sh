@@ -50,6 +50,7 @@ export -f usageHelp
 # export test_plan=$1
 
 declare -A arr_prop
+cd $1
 ls
 file="./$1/testplan.properties"
 if [ -f "$file" ]
