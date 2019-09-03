@@ -52,7 +52,7 @@ export -f usageHelp
 declare -A arr_prop
 cd $2
 ls
-file="./$2/testplan.properties"
+file=".$2/testplan.properties"
 if [ -f "$file" ]
 then
     while IFS='=' read -r key value; do
