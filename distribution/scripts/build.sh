@@ -37,4 +37,6 @@ echo $perf_apim_dir
 mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
 mvn clean install
+cd distribution/target
+tar xvzf performance-apim-distribution-0.1.1-SNAPSHOT.tar.gz
 set +x
