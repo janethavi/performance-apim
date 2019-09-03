@@ -18,10 +18,12 @@
 # ----------------------------------------------------------------------------
 # Run performance tests on AWS Cloudformation Stacks
 # ----------------------------------------------------------------------------
+set -x
 perf_apim_dir=$(dirname "$0")
-echo $perf_apim_dir
+echo "dir name $perf_apim_dir"
 cd $perf_apim_dir/..
 git clone https://github.com/janethavi/performance-common.git
+echo " $perf_apim_dir"
 perf_dir=$(realpath "performance-common")
 
 cd $perf_dir
@@ -29,4 +31,8 @@ mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
 ./mvnw clean install
 cd $perf_apim_dir
+echo $perf_apim_dir
+mvn -N io.takari:maven:wrapper
+mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
 mvn clean install
+set +x
