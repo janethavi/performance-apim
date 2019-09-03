@@ -50,9 +50,12 @@ export -f usageHelp
 # export test_plan=$1
 
 declare -A arr_prop
+set -x
 cd $2
+echo "List"
 ls
 file=".$2/testplan-props.properties"
+set +x
 if [ -f "$file" ]
 then
     while IFS='=' read -r key value; do
