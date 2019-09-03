@@ -50,9 +50,9 @@ export -f usageHelp
 # export test_plan=$1
 
 declare -A arr_prop
-cd $1
+cd $2
 ls
-file="./$1/testplan.properties"
+file="./$2/testplan.properties"
 if [ -f "$file" ]
 then
     while IFS='=' read -r key value; do
