@@ -55,7 +55,7 @@ cd $2
 echo "List"
 ls
 cat testplan-props.properties
-file="~$2/testplan-props.properties"
+file="$2/testplan-props.properties"
 set +x
 if [ -f "$file" ]
 then
