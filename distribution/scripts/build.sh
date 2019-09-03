@@ -31,6 +31,8 @@ mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
 ./mvnw clean install
 cd $perf_apim_dir
+cd ..
+cd ..
 echo $perf_apim_dir
 mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
