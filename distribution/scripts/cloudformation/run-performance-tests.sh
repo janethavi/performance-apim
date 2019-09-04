@@ -163,4 +163,5 @@ function get_columns() {
 }
 export -f get_columns
 
-$script_dir/cloudformation-common.sh "${opts[@]}" -- "$@"
+#$script_dir/cloudformation-common.sh "${opts[@]}" -- "$@"
+$script_dir/cloudformation-common.sh "$file"
