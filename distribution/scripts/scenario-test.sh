@@ -20,7 +20,7 @@
 # ----------------------------------------------------------------------------
 script_dir=$(dirname "$0")
 input_dir=$2
-performance_dist=$2/"performance-apim-distribution"
+performance_dist=$2/"performance-apim-distribution.tar.gz"
 cd $script_dir/..
 mkdir target
 script_dir=$script_dir/target
