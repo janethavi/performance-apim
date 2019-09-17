@@ -18,18 +18,18 @@
 # ----------------------------------------------------------------------------
 # Run performance tests on AWS Cloudformation Stacks
 # ----------------------------------------------------------------------------
-script_dir=$(dirname "$0")
+script_dir=$(pwd)
 echo "Script dir $script_dir"
 input_dir=$2
 performance_dist=$2/"performance-apim-distribution.tar.gz"
-cd $script_dir/..
-mkdir target
-script_dir=$script_dir/target
+# cd $script_dir/..
+# mkdir target
+# script_dir=$script_dir/target
 
 cp $performance_dist $script_dir
-cd $script_dir
+# cd $script_dir
 tar xvf performance_dist
 
-performance_script="/cloudformation/perform-test.sh"
+performance_script="target/cloudformation/perform-test.sh"
 run_command=$performance_script
 $run_command $input_dir
