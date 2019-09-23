@@ -20,17 +20,16 @@
 # ----------------------------------------------------------------------------
 script_dir=$(pwd)
 echo "Script dir $script_dir"
-input_dir=$2
+INPUT_DIR=$2
+OUTPUT_DIR=$4
+
 performance_dist_name="performance-apim-distribution.tar.gz"
 performance_dist=$2/$performance_dist_name
-# cd $script_dir/..
-# mkdir target
-# script_dir=$script_dir/target
 
 cp $performance_dist $script_dir
-# cd $script_dir
+
 tar xvf $performance_dist_name
 
 performance_script="target/cloudformation/perform-test.sh"
 run_command=$performance_script
-$run_command $input_dir
+$run_command $INPUT_DIR $OUTPUT_DIR
