@@ -47,16 +47,10 @@ function usageHelp() {
 }
 export -f usageHelp
 
-# export test_plan=$1
-
 declare -A arr_prop
-set -x
-cd $2
-echo "List"
-ls
-cat testplan-props.properties
-file="$2/testplan-props.properties"
-set +x
+INDUT_DIR=$2
+cd $INDUT_DIR
+file="$INDUT_DIR/testplan-props.properties"
 if [ -f "$file" ]
 then
     while IFS='=' read -r key value; do
@@ -164,4 +158,4 @@ function get_columns() {
 export -f get_columns
 
 #$script_dir/cloudformation-common.sh "${opts[@]}" -- "$@"
-$script_dir/cloudformation-common.sh "$2"
+$script_dir/cloudformation-common.sh "$INDUT_DIR"
