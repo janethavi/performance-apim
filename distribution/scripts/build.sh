@@ -19,22 +19,23 @@
 # Run performance tests on AWS Cloudformation Stacks
 # ----------------------------------------------------------------------------
 perf_apim_dir=$(dirname "$0")
-echo "dir name $perf_apim_dir"
-cd $perf_apim_dir/..
-git clone https://github.com/janethavi/performance-common.git
-echo " $perf_apim_dir"
-perf_dir=$(realpath "performance-common")
+home_dir=$perf_apim_dir/..
 
-cd $perf_dir
+performance_common_repo=https://github.com/janethavi/performance-common.git
+git -C $home_dir clone $performance_common_repo
+ln -s $home_dir/performance-common perf_common
+
+pushd perf_common
+git checkout test-grid
 mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
 ./mvnw clean install
-cd $perf_apim_dir
-cd ../../
-echo $perf_apim_dir
+popd
+pushd $perf_apim_dir
 mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
 mvn clean install
-cd distribution/target
-tar xvzf performance-apim-distribution-0.1.1-SNAPSHOT.tar.gz
-cd ../../
+mkdir $home_dir/Perf_dist
+ln -s $home_dir/Perf_dist Perf_dist
+find $perf_apim_dir/distribution/target/ -name "*.tar.gz" -exec sh -c 'tar xvf {} -C Perf_dist' \;
+popd
