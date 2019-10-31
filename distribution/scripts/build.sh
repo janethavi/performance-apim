@@ -34,5 +34,5 @@ popd
 pushd $home_dir
 mvn clean install
 mkdir $home_dir/performance-dist
-find $home_dir/distribution/target/ -name "*.tar.gz" -execdir tar -xvf -C '$home_dir/performance-dist' \;
+find $home_dir/distribution/target/ -name '*.tar.gz' -execdir tar -C $home_dir/performance-dist -xzvf '{}' \;
 popd
