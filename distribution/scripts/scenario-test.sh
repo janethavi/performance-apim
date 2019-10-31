@@ -19,10 +19,11 @@
 # Run performance tests on AWS Cloudformation Stacks
 # ----------------------------------------------------------------------------
 script_dir=$(dirname "$0")
-.$script_dir/build.sh
+script_dir=$(realpath "$script_dir")
+. $script_dir/build.sh
 INPUT_DIR=$2
 OUTPUT_DIR=$4
 
-performance_script=$script_dir/../perf_dist/cloudformation/perform-test.sh
+performance_script=$script_dir/../../performance-dist/cloudformation/perform-test.sh
 run_command=$performance_script
 $run_command $INPUT_DIR $OUTPUT_DIR
