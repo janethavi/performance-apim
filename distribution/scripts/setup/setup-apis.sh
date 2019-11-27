@@ -144,4 +144,4 @@ function setup(){
         exit 1
     fi
 }
-export -f setup
+setup
