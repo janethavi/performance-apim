@@ -102,7 +102,7 @@ if [[ -z $backend_endpoint_type ]]; then
     echo "Please provide the backend endpoint type."
     exit 1
 fi
-apim_host_url=echo $apim_host | sed -E -e 's_.*://([^/@]*@)?([^/:]+).*_\2_'
+apim_host_url=$(echo $apim_host | sed -E -e 's_.*://([^/@]*@)?([^/:]+).*_\2_')
 echo $apim_host_url
 
 base_https_url="https://${apim_host_url}:9443"
