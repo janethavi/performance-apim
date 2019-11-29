@@ -103,11 +103,11 @@ if [[ -z $backend_endpoint_type ]]; then
     exit 1
 fi
 apim_host_url=$(echo $apim_host | sed -E -e 's_.*://([^/@]*@)?([^/:]+).*_\2_')
-echo $apim_host_url
 
 base_https_url="https://${apim_host_url}:9443"
 nio_https_url="https://${apim_host_url}:8243"
-
+echo "base $base_https_url"
+echo "nio $nio_https_url"
 curl_command="curl -sk"
 
 #Check whether jq command exsits
