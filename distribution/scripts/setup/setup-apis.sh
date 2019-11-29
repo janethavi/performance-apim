@@ -128,7 +128,7 @@ function setup(){
 
     # Create APIs in Local API Manager
     sudo -u $os_user $script_dir/../apim/create-api.sh -a $apim_host -n "echo" -d "Echo API" -b $netty_host
-    sudo -u $os_user $script_dir/../apim/create-api.sh -a $apim_host -n "mediation" -d "Mediation API" -b $netty_host
+    sudo -u $os_user $script_dir/../apim/create-api.sh -a $apim_host -n "mediation" -d "Mediation API" -b $netty_host \
         -o "$(mediation_out_sequence | tr -d "\n\r")"
 
     # Generate tokens
