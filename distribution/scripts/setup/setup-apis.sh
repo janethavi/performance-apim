@@ -138,7 +138,7 @@ function setup(){
     fi
 
     if [[ -f $tokens_sql ]]; then
-        mysql -h $mysql_host -u $mysql_user -p$mysql_password apim <$tokens_sql
+        mysql -h $mysql_host -u $mysql_user -p$mysql_password WSO2AM_APIMGT_DB <$tokens_sql
     else
         echo "SQL file with generated tokens not found."
         exit 1

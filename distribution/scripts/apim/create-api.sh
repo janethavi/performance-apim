@@ -107,8 +107,6 @@ apim_host_url=$(echo ${apim_host_url} | sed 's/\\//g')
 
 base_https_url="https://${apim_host_url}:9443"
 nio_https_url="https://${apim_host_url}:8243"
-echo "base $base_https_url"
-echo "nio $nio_https_url"
 curl_command="curl -sk"
 
 #Check whether jq command exsits
@@ -356,7 +354,6 @@ create_api() {
             echo -ne "\n"
             return
         fi
-        echo "Updating $api_name API to set mediation policy..."
         local api_details=""
         n=0
         until [ $n -ge 50 ]; do
