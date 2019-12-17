@@ -26,11 +26,13 @@ script_dir=$(dirname "$0")
 function initialize() {
     export apim_ssh_host=apim
     export apim_host=$(get_ssh_hostname $apim_ssh_host)
-    echo "Downloading tokens to $HOME."
-    scp $apim_ssh_host:apim/target/tokens.csv $HOME/
+    # echo "Downloading tokens to $HOME."
+    # scp $apim_ssh_host:apim/target/tokens.csv $HOME/
     if [[ $jmeter_servers -gt 1 ]]; then
         for jmeter_ssh_host in ${jmeter_ssh_hosts[@]}; do
             echo "Copying tokens to $jmeter_ssh_host"
+            # scp $HOME/tokens.csv $jmeter_ssh_host:
+            cp $script_dir/../apim/target/tokens.csv $HOME
             scp $HOME/tokens.csv $jmeter_ssh_host:
         done
     fi
