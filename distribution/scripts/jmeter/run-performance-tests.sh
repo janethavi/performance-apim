@@ -61,13 +61,17 @@ declare -A test_scenario1=(
 )
 
 function before_execute_test_scenario() {
+    apim_ips=("$@")
     local service_path=${scenario[path]}
     local protocol=${scenario[protocol]}
     jmeter_params+=("host=$apim_host" "port=8243" "path=$service_path")
     jmeter_params+=("payload=$HOME/${msize}B.json" "response_size=${msize}B" "protocol=$protocol"
         tokens="$HOME/tokens.csv")
-    echo "Starting APIM service"
-    ssh $apim_ssh_host "./apim/apim-start.sh -m $heap"
+    for ip in "${apim_ips[@]}"
+    do
+        echo "Starting APIM service in"
+        ssh -i $key_file ubuntu@$ip "./Perf_dist/apim/apim-start.sh -m $heap"
+    done
 }
 
 function after_execute_test_scenario() {

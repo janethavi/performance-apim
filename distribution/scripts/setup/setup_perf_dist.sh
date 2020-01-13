@@ -22,12 +22,13 @@
 script_dir=$(dirname "$0")
 script_dir=$(realpath $script_dir)
 apim_ips=("$@")
+key_file=$(find /home/ubuntu/ -name '*.pem' )
 
 perf_dist_location=$(find /home/ubuntu/Resources/performance-apim/distribution/target -name '*.tar.gz' )
 perf_dist_name=$(echo $perf_dist_location | cut -d '/' -f 8-)
-for i in "${apim_ips[@]}"
+for ip in "${apim_ips[@]}"
 do
-    scp -i $key_file -o "StrictHostKeyChecking=no" $perf_dist_location ubuntu@$apim_ips[i]:/home/ubuntu
+    scp -i $key_file -o "StrictHostKeyChecking=no" $perf_dist_location ubuntu@$ip:/home/ubuntu
     # scp -i $key_file -o "StrictHostKeyChecking=no" $script_dir/setup_perf_dist.sh ubuntu@$apim_ips[i]:/home/ubuntu
-    ssh -i $key_file -o "StrictHostKeyChecking=no" ubuntu@$apim_ips[i] tar xzf /home/ubuntu/$perf_dist_name
+    ssh -i $key_file -o "StrictHostKeyChecking=no" ubuntu@$ip tar xzf /home/ubuntu/$perf_dist_name
 done

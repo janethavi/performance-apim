@@ -375,12 +375,14 @@ create_api() {
             local updated_api_id=$(echo "$updated_api" | jq -r '.id')
             if [ ! -z $updated_api_id ] && [ ! $updated_api_id = "null" ]; then
                 echo "Mediation policy is set to $api_name API with ID $updated_api_id"
+                echo -ne "\n"
                 break
             fi
             n=$(($n + 1))
         done
         if [ -z $updated_api_id ] || [ $updated_api_id = "null" ]; then
             echo "Failed to set mediation policy to $api_name API"
+            echo -ne "\n"
             return 1
         fi
     fi

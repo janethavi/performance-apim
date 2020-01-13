@@ -52,7 +52,7 @@ if [[ -z $heap_size ]]; then
 fi
 
 jvm_dir=""
-for dir in /usr/lib/jvm/jdk1.8*; do
+for dir in /usr/lib/jvm/java-8*; do
     [ -d "${dir}" ] && jvm_dir="${dir}" && break
 done
 export JAVA_HOME="${jvm_dir}"
@@ -61,7 +61,7 @@ carbon_bootstrap_class=org.wso2.carbon.bootstrap.Bootstrap
 
 if pgrep -f "$carbon_bootstrap_class" >/dev/null; then
     echo "Shutting down APIM"
-    wso2am/bin/wso2server.sh stop
+    /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/bin/wso2server.sh stop
 
     echo "Waiting for API Manager to stop"
     while true; do
@@ -87,7 +87,7 @@ echo "Enabling GC Logs"
 export JAVA_OPTS="-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/ubuntu/wso2am/repository/logs/gc.log"
 
 echo "Starting APIM"
-wso2am/bin/wso2server.sh start
+/usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/bin/wso2server.sh start
 
 echo "Waiting for API Manager to start"
 
