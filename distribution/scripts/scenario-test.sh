@@ -18,6 +18,7 @@
 # ----------------------------------------------------------------------------
 # Run performance tests on AWS Cloudformation Stacks
 # ----------------------------------------------------------------------------
+
 script_dir=$(dirname "$0")
 script_dir=$(realpath "$script_dir")
 . $script_dir/build.sh

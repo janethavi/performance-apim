@@ -107,6 +107,7 @@ for ((c = 1; c <= $tokens_count; c++)); do
     echo $ACCESS_TOKEN_KEY >>$tokens_file
     echo -ne "Generated Tokens Count: ${c}\r"
 done
+cp $tokens_file $HOME
 echo "COMMIT;" >>$sql_file
 
 echo "Token Generation Completed.........."

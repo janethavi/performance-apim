@@ -69,7 +69,8 @@ function before_execute_test_scenario() {
         tokens="$HOME/tokens.csv")
     for ip in "${apim_ips[@]}"
     do
-        echo "Starting APIM service in"
+        echo $ip
+        echo "Starting APIM service in $ip"
         ssh -i $key_file ubuntu@$ip "./Perf_dist/apim/apim-start.sh -m $heap"
     done
 }

@@ -123,9 +123,6 @@ EOF
 export -f mediation_out_sequence
 
 function setup(){
-    # # Start API Manager
-    # sudo -u $os_user $script_dir/../apim/apim-start.sh -m 1G
-
     # Create APIs in Local API Manager
     sudo -u $os_user $script_dir/../apim/create-api.sh -a $apim_host -n "echo" -d "Echo API" -b $netty_host
     sudo -u $os_user $script_dir/../apim/create-api.sh -a $apim_host -n "mediation" -d "Mediation API" -b $netty_host \
