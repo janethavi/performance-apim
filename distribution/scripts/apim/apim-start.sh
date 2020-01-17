@@ -74,7 +74,7 @@ if pgrep -f "$carbon_bootstrap_class" >/dev/null; then
     done
 fi
 
-log_files=(wso2am/repository/logs/*)
+log_files=(/usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/*)
 if [ ${#log_files[@]} -gt 1 ]; then
     echo "Log files exists. Moving to /tmp"
     mv "${log_files[@]}" /tmp/
@@ -84,7 +84,7 @@ echo "Setting Heap to ${heap_size}"
 export JVM_MEM_OPTS="-Xms${heap_size} -Xmx${heap_size}"
 
 echo "Enabling GC Logs"
-export JAVA_OPTS="-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/home/ubuntu/wso2am/repository/logs/gc.log"
+export JAVA_OPTS="-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/gc.log"
 
 echo "Starting APIM"
 /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/bin/wso2server.sh start

@@ -67,18 +67,16 @@ function before_execute_test_scenario() {
     jmeter_params+=("host=$apim_host" "port=8243" "path=$service_path")
     jmeter_params+=("payload=$HOME/${msize}B.json" "response_size=${msize}B" "protocol=$protocol"
         tokens="$HOME/tokens.csv")
-    for ip in "${apim_ips[@]}"
-    do
-        echo $ip
-        echo "Starting APIM service in $ip"
-        ssh -i $key_file ubuntu@$ip "./Perf_dist/apim/apim-start.sh -m $heap"
+    for ip in ${apim_ips[@]}; do
+        echo "Starting APIM service in $ip with $heap of heap memory"
+        ssh -i $key_file ubuntu@$ip "./apim/apim-start.sh -m $heap"
     done
 }
 
 function after_execute_test_scenario() {
     write_server_metrics apim $apim_ssh_host org.wso2.carbon.bootstrap.Bootstrap
-    download_file $apim_ssh_host wso2am/repository/logs/wso2carbon.log wso2carbon.log
-    download_file $apim_ssh_host wso2am/repository/logs/gc.log apim_gc.log
+    download_file $apim_ssh_host /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/wso2carbon.log wso2carbon.log
+    download_file $apim_ssh_host /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/gc.log apim_gc.log
 }
 
 test_scenarios
