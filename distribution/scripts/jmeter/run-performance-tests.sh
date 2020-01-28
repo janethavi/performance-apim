@@ -61,22 +61,28 @@ declare -A test_scenario1=(
 )
 
 function before_execute_test_scenario() {
-    apim_ips=("$@")
+    export apim_ips=("$@")
     local service_path=${scenario[path]}
     local protocol=${scenario[protocol]}
     jmeter_params+=("host=$apim_host_url" "port=8243" "path=$service_path")
     jmeter_params+=("payload=$HOME/${msize}B.json" "response_size=${msize}B" "protocol=$protocol"
         tokens="$HOME/tokens.csv")
     for ip in ${apim_ips[@]}; do
-        echo "Starting APIM service in $ip with $heap of heap memory"
+        n=1
+        echo "Starting APIM${n} service in $ip with $heap of heap memory"
         ssh -i $key_file ubuntu@$ip sudo bash ./apim/apim-start.sh -m $heap
+        n=$((n + 1))
     done
 }
 
 function after_execute_test_scenario() {
-    write_server_metrics apim $apim_ssh_host org.wso2.carbon.bootstrap.Bootstrap
-    download_file $apim_ssh_host /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/wso2carbon.log wso2carbon.log
-    download_file $apim_ssh_host /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/gc.log apim_gc.log
+    for ip in ${apim_ips[@]}; do
+        n=1
+        write_server_metrics apim${n} $apim_ssh_host org.wso2.carbon.bootstrap.Bootstrap
+        download_file $apim_ssh_host /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/wso2carbon.log wso2carbon.log
+        download_file $apim_ssh_host /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/gc.log apim_gc.log
+        n=$((n + 1))
+    done
 }
 
 test_scenarios
