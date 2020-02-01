@@ -28,5 +28,5 @@ for ip in "${apim_ips[@]}"
 do
     scp -i $key_file -o "StrictHostKeyChecking=no" $perf_dist_location ubuntu@$ip:/home/ubuntu
     ssh -i $key_file -o "StrictHostKeyChecking=no" ubuntu@$ip mkdir -p /home/ubuntu/Perf_dist
-    ssh -i $key_file -o "StrictHostKeyChecking=no" ubuntu@$ip tar xzf /home/ubuntu/$perf_dist_name
+    ssh -i $key_file -o "StrictHostKeyChecking=no" ubuntu@$ip tar xzf $perf_dist_name -C /home/ubuntu/Perf_dist
 done

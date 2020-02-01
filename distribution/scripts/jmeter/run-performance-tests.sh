@@ -25,9 +25,13 @@ script_dir=$(dirname "$0")
 
 function initialize() {
     export apim_ssh_host=apim
-    # export apim_host=$(get_ssh_hostname $apim_ssh_host)
-    # echo "Downloading tokens to $HOME."
-    # scp $apim_ssh_host:apim/target/tokens.csv $HOME/
+    n=1
+    apim_ips=("$@")
+    for ip in ${apim_ips[@]}; do
+        echo "Starting APIM${n} service in $ip with $heap of heap memory"
+        ssh -i $key_file ubuntu@$ip sudo bash ./Perf_dist/apim/apim-start.sh -m $heap
+        n=$(($n + 1))
+    done
     if [[ $jmeter_servers -gt 1 ]]; then
         for jmeter_ssh_host in ${jmeter_ssh_hosts[@]}; do
             echo "Copying tokens to $jmeter_ssh_host"
@@ -67,12 +71,6 @@ function before_execute_test_scenario() {
     jmeter_params+=("host=$apim_host_url" "port=8243" "path=$service_path")
     jmeter_params+=("payload=$HOME/${msize}B.json" "response_size=${msize}B" "protocol=$protocol"
         tokens="$HOME/tokens.csv")
-    n=1
-    for ip in ${apim_ips[@]}; do
-        echo "Starting APIM${n} service in $ip with $heap of heap memory"
-        ssh -i $key_file ubuntu@$ip sudo bash ./apim/apim-start.sh -m $heap
-        n=$(($n + 1))
-    done
 }
 
 function after_execute_test_scenario() {
@@ -81,8 +79,8 @@ function after_execute_test_scenario() {
     apim_ssh_command="ssh -i $key_file -o "StrictHostKeyChecking=no" -T ubuntu@"
     for ip in ${apim_ips[@]}; do
         write_server_metrics apim${n} "$apim_ssh_command${ip}" org.wso2.carbon.bootstrap.Bootstrap
-        download_file apim${n} "${apim_ssh_command}${ip}" /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/wso2carbon.log wso2carbon.log
-        download_file apim${n} "${apim_ssh_command}${ip}" /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/gc.log wso2carbon.log
+        download_file apim${n} "${apim_ssh_command}${ip}" /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/wso2carbon.log apim${n}/wso2carbon.log
+        download_file apim${n} "${apim_ssh_command}${ip}" /usr/lib/wso2/wso2am/2.6.0/wso2am-2.6.0/repository/logs/gc.log apim${n}/apim${n}_gc.log
         n=$(($n + 1))
     done
 }
