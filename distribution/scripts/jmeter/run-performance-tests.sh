@@ -68,6 +68,7 @@ function before_execute_test_scenario() {
     export apim_ips=("$@")
     local service_path=${scenario[path]}
     local protocol=${scenario[protocol]}
+    apim_host_url=$(cat $HOME/apim-host-url.txt)
     jmeter_params+=("host=$apim_host_url" "port=8243" "path=$service_path")
     jmeter_params+=("payload=$HOME/${msize}B.json" "response_size=${msize}B" "protocol=$protocol"
         tokens="$HOME/tokens.csv")

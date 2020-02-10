@@ -102,8 +102,9 @@ if [[ -z $backend_endpoint_type ]]; then
     echo "Please provide the backend endpoint type."
     exit 1
 fi
+
 apim_host_url=$(echo $apim_host | sed -E -e 's_.*://([^/@]*@)?([^/:]+).*_\2_')
-export apim_host_url="$(echo ${apim_host_url} | sed 's/\\//g')"
+echo ${apim_host_url} | sed 's/\\//g' >> $HOME/apim-host-url.txt
 
 base_https_url="https://${apim_host_url}:9443"
 nio_https_url="https://${apim_host_url}:8243"
