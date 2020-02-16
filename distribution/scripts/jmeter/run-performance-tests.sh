@@ -26,18 +26,17 @@ script_dir=$(dirname "$0")
 function initialize() {
     export apim_ssh_host=apim
     n=1
-    apim_ips=("$@")
+    apim_ips=$1
+    jmeter_servers_ips=$2
     for ip in ${apim_ips[@]}; do
-        echo "Starting APIM${n} service in $ip with $heap of heap memory"
-        ssh -i $key_file ubuntu@$ip sudo bash ./Perf_dist/apim/apim-start.sh -m $heap
-        n=$(($n + 1))
+       echo "Starting APIM${n} service in $ip with $heap of heap memory"
+       ssh -i $key_file ubuntu@$ip sudo bash ./Perf_dist/apim/apim-start.sh -m $heap
+       n=$(($n + 1))
     done
-    if [[ $jmeter_servers -gt 1 ]]; then
-        for jmeter_ssh_host in ${jmeter_ssh_hosts[@]}; do
-            echo "Copying tokens to $jmeter_ssh_host"
-            # scp $HOME/tokens.csv $jmeter_ssh_host:
-            cp $script_dir/../apim/target/tokens.csv $HOME
-            scp $HOME/tokens.csv $jmeter_ssh_host:
+    if [[ ! -z $jmeter_servers_ips ]]; then
+        echo "Copying tokens to JMeter-Servers"
+        for jmeter_servers_ip in ${jmeter_servers_ips[@]}; do
+            scp -i $key_file $HOME/tokens.csv ubuntu@$jmeter_servers_ip:/home/ubuntu
         done
     fi
 }
