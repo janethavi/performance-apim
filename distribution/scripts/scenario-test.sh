@@ -16,7 +16,7 @@
 # under the License.
 #
 # ----------------------------------------------------------------------------
-# Run performance tests on AWS Cloudformation Stacks
+# Build performance distribution
 # ----------------------------------------------------------------------------
 
 script_dir=$(dirname "$0")

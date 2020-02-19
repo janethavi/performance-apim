@@ -31,6 +31,8 @@ function initialize() {
     for ip in ${apim_ips[@]}; do
        echo "Starting APIM${n} service in $ip with $heap of heap memory"
        ssh -i $key_file ubuntu@$ip sudo bash ./Perf_dist/apim/apim-start.sh -m $heap
+       echo "Installing SAR to APIM-$n"
+       ssh -i $key_file ubuntu@$ip sudo bash ./Perf_dist/sar/install-sar.sh
        n=$(($n + 1))
     done
     if [[ ! -z $jmeter_servers_ips ]]; then

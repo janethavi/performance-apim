@@ -16,7 +16,7 @@
 # under the License.
 #
 # ----------------------------------------------------------------------------
-# Run performance tests on AWS Cloudformation Stacks
+# Build Performance-Distribution in AMIs
 # ----------------------------------------------------------------------------
 perf_apim_dir=$(dirname "$0")
 perf_apim_dir=$(realpath "$perf_apim_dir")
