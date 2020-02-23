@@ -22,99 +22,50 @@
 export script_name="$0"
 export script_dir=$(dirname "$0")
 
-export wso2am_distribution=""
-export mysql_connector_jar=""
 export wso2am_ec2_instance_type=""
 export wso2am_rds_db_instance_class=""
 
+export number_of_product_nodes=2
+
 export aws_cloudformation_template_filename="apim_perf_test_cfn.yaml"
 export application_name="WSO2 API Manager"
-export ec2_instance_name="wso2am"
 export metrics_file_prefix="apim"
 export run_performance_tests_script_name="run-performance-tests.sh"
+export mysql_host=""
+export apim_endpoint=""
+export mysql_username=""
+export mysql_password=""
 
-function usageCommand() {
-    echo "-A <wso2am_ec2_instance_type> -D <wso2am_rds_db_instance_class>"
-}
-export -f usageCommand
 
-function usageHelp() {
-    #echo "-a: WSO2 API Manager Distribution."
-    #echo "-c: MySQL Connector JAR file."
-    echo "-A: Amazon EC2 Instance Type for WSO2 API Manager."
-    echo "-D: Amazon EC2 DB Instance Class for WSO2 API Manager RDS Instance."
-
-}
-export -f usageHelp
-
-declare -A arr_prop
-INDUT_DIR=$2
-cd $INDUT_DIR
-file="$INDUT_DIR/testplan-props.properties"
-if [ -f "$file" ]
+input_dir=$1
+output_dir=$2
+deployment_prop_file=$input_dir/"deployment.properties"
+testplan_prop_file=$input_dir/../"testplan-props.properties"
+echo "Test output directory is $output_dir"
+declare -A propArray
+if [ -f "$deployment_prop_file" ]
 then
     while IFS='=' read -r key value; do
-        arr_prop["$key"]="$value"
-    done < $file
-    wso2am_ec2_instance_type=${arr_prop["wso2am_ec2"]}
-    wso2am_rds_db_instance_class=${arr_prop["rds_ec2"]}
+        propArray["$key"]="$value"
+    done < $deployment_prop_file
+    mysql_host=${propArray[RDSHost]}
+    apim_endpoint=${propArray[GatewayHttpsUrl]}
 else
-  echo "$file not found."
+  echo "Error: deployment.properties file not found."
   exit 1
 fi
-
-# while getopts ":u:y:m:d:n:s:b:r:J:N:t:p:w:A:D:" opt; do
-#     case "${opt}" in
-#     A)
-#         wso2am_ec2_instance_type=${OPTARG}
-#         ;;
-#     D)
-#         wso2am_rds_db_instance_class=${OPTARG}
-#         ;;
-#     *)
-#         opts+=("-${opt}")
-#         [[ -n "$OPTARG" ]] && opts+=("$OPTARG")
-#         ;;
-#     esac
-# done
-# shift "$((OPTIND - 1))"
-
-function validate() {
-    # if [[ ! -f $wso2am_distribution ]]; then
-    #     echo "Please provide WSO2 API Manager distribution."
-    #     exit 1
-    # fi
-
-    export wso2am_distribution_filename=wso2am-2.6.0.zip
-
-    # if [[ ${wso2am_distribution_filename: -4} != ".zip" ]]; then
-    #     echo "WSO2 API Manager distribution must have .zip extension"
-    #     exit 1
-    # fi
-
-    # if [[ ! -f $mysql_connector_jar ]]; then
-    #     echo "Please provide MySQL Connector JAR file."
-    #     exit 1
-    # fi
-
-    export mysql_connector_jar_filename=mysql-connector-java-8.0.16.jar
-
-    # if [[ ${mysql_connector_jar_filename: -4} != ".jar" ]]; then
-    #     echo "MySQL Connector JAR must have .jar extension"
-    #     exit 1
-    # fi
-
-    if [[ -z $wso2am_ec2_instance_type ]]; then
-        echo "Please provide the Amazon EC2 Instance Type for WSO2 API Manager."
-        exit 1
-    fi
-
-    if [[ -z $wso2am_rds_db_instance_class ]]; then
-        echo "Please provide the Amazon EC2 DB Instance Class for WSO2 API Manager RDS Instance."
-        exit 1
-    fi
-}
-export -f validate
+if [ -f "$testplan_prop_file" ]
+then
+    while IFS='=' read -r key value; do
+        propArray["$key"]="$value"
+    done < $testplan_prop_file
+    mysql_username=${propArray[DBUsername]}
+    mysql_password=${propArray[DBPassword]}
+    IFS=' '
+else
+  echo "Error: testplan_prop.properties file not found."
+  exit 1
+fi
 
 function create_links() {
     wso2am_distribution=$(realpath $wso2am_distribution)
@@ -158,4 +109,4 @@ function get_columns() {
 export -f get_columns
 
 #$script_dir/cloudformation-common.sh "${opts[@]}" -- "$@"
-$script_dir/cloudformation-common.sh "$INDUT_DIR"
+$script_dir/perform-test.sh "$input_dir" "$output_dir"
