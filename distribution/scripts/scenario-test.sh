@@ -25,5 +25,5 @@ script_dir=$(realpath "$script_dir")
 INPUT_DIR=$2
 OUTPUT_DIR=$4
 
-performance_script=$script_dir/../../performance-dist/cloudformation/run-performance-test.sh
+performance_script=$script_dir/../../performance-dist/cloudformation/run-performance-tests.sh
 $performance_script $INPUT_DIR $OUTPUT_DIR
