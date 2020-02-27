@@ -22,10 +22,27 @@ perf_apim_dir=$(dirname "$0")
 perf_apim_dir=$(realpath "$perf_apim_dir")
 home_dir=$perf_apim_dir/../..
 
-performance_common_repo=https://github.com/janethavi/performance-common.git
-git -C $home_dir clone $performance_common_repo
+INPUT_DIR=$1
+deployment_prop_file=$INPUT_DIR/"deployment.properties"
+infraRepoDir=""
 
-pushd $home_dir/performance-common
+declare -A propArray
+if [ -f "$deployment_prop_file" ]
+then
+    while IFS='=' read -r key value; do
+        propArray["$key"]="$value"
+    done < $deployment_prop_file
+    deploymentRepoDir=${propArray[depRepoLocation]}
+    infraRepoDir=$(echo "$deploymentRepoDir" | sed "s/DeploymentRepository/InfraRepository/")
+else
+  echo "Error: deployment.properties file not found."
+  exit 1
+fi
+
+# performance_common_repo=https://github.com/janethavi/performance-common.git
+# git -C $home_dir clone $performance_common_repo
+
+pushd $infraRepoDir
 git checkout test-grid
 mvn -N io.takari:maven:wrapper
 mvn -N io.takari:maven:wrapper -Dmaven=3.5.2
